@@ -1,0 +1,5 @@
+package com.nitya.microservices.limitsservice.bean;
+
+public class Limits {
+
+}

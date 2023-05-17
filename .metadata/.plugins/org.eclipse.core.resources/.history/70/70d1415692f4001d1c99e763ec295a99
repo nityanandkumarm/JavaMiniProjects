@@ -1,0 +1,5 @@
+package com.nitya.assign.restassign.entity;
+
+public class BuyingDetails {
+
+}

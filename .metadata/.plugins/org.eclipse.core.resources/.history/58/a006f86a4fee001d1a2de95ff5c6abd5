@@ -1,0 +1,16 @@
+package com.nitya.assign.restassign.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nitya.assign.restassign.Entity.Referral;
+
+@RestController
+public class ReferralController {
+	
+	@GetMapping("/referral/{id}")
+	public Referral getReferralById(@RequestParam Integer id) {
+		return null;
+	}
+}

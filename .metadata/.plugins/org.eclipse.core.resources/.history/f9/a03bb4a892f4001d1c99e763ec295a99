@@ -1,0 +1,33 @@
+package com.nitya.assign.restassign.entity;
+
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class BuyingDetails {
+	
+	@Id
+	private Integer id;
+	
+	private Integer userId;
+	private String productName;
+	
+	@CreationTimestamp
+	private LocalDateTime purchaseTime;
+
+	public BuyingDetails() {
+		
+	}
+	
+	public BuyingDetails(Integer userId, String productName) {
+		super();
+		this.userId = userId;
+		this.productName = productName;
+	}
+	
+	
+}

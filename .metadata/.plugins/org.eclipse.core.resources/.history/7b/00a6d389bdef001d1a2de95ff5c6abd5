@@ -1,0 +1,45 @@
+package com.nitya.rest.users.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.nitya.rest.users.Entity.User;
+import com.nitya.rest.users.Entity.Wishlist;
+import com.nitya.rest.users.exception.UserNotFoundException;
+import com.nitya.rest.users.repository.UserRepository;
+
+public class UsersServiceImpl implements UsersService {
+	
+	@Autowired
+	private UserRepository userRepo;
+	
+	public List<User> getAllUserDetails() {
+		return userRepo.findAll();
+	}
+	
+	public User getUserDetails(@PathVariable Integer id) {
+		Optional<User> userDetails = userRepo.findById(id);
+		
+		if(userDetails.isEmpty()){
+			throw new UserNotFoundException(""+id);
+		}
+		return userDetails.get();
+	}
+	
+	@DeleteMapping(path = "/users/{id}")
+	public void deleteUserDetails(@PathVariable Integer id) {
+		Optional<User> userDetails = userRepo.findById(id);
+		
+		if(userDetails.isEmpty()){
+			throw new UserNotFoundException(""+id);
+		}
+		
+		Wishlist userWislist = userDetails.get().getWishlist();
+		//wishlistRepo.delete(userWislist);
+		userRepo.deleteById(id);
+	}
+}

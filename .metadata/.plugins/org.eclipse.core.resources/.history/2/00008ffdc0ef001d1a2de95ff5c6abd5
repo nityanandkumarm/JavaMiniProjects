@@ -1,0 +1,5 @@
+package com.nitya.rest.wishlistservice.entity;
+
+public class Wishlist {
+
+}

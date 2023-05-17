@@ -1,0 +1,50 @@
+package com.nitya.rest.users.Entity;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+
+@Entity
+public class Wishlist {
+	
+	@Id
+	@GeneratedValue
+	private Integer id;
+	
+	@OneToOne
+	@JsonIgnore
+	private User user;
+	
+	private List<Integer> propertyId;
+	
+	public Wishlist() {}
+	
+	public Wishlist(User user, List<Integer> propertyId) {
+		super();
+		this.user = user;
+		this.propertyId = propertyId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Integer> getPropertyId() {
+		return propertyId;
+	}
+
+	public void addPropertyId(Integer propertyId) {
+		this.propertyId = propertyId;
+	}
+	
+	
+}

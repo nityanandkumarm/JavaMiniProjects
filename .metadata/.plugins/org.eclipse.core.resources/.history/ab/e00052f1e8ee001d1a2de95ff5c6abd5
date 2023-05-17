@@ -1,0 +1,5 @@
+package com.nitya.rest.users.controller.repository;
+
+public interface wishlistRepo {
+
+}

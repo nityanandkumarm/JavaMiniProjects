@@ -1,0 +1,5 @@
+package com.nitya.rest.users.service;
+
+public class usersServiceImpl implements UsersService{
+
+}

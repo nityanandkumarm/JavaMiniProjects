@@ -1,0 +1,12 @@
+package com.nitya.microservices.limitsservice.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class LimitsController {
+	
+	@GetMapping("/limits")
+	public Limits retrieveLimits() {
+		
+	}
+}

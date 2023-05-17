@@ -1,0 +1,5 @@
+package com.nitya.rest.wishlistservice.repository;
+
+public class WishlistRepository {
+
+}

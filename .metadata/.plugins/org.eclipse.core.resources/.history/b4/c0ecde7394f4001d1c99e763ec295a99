@@ -1,0 +1,47 @@
+package com.nitya.assign.restassign.services;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.nitya.assign.restassign.entity.BuyingDetails;
+import com.nitya.assign.restassign.entity.Referral;
+import com.nitya.assign.restassign.entity.User;
+import com.nitya.assign.restassign.repository.BuyingDetailsRepository;
+import com.nitya.assign.restassign.repository.ReferralRepository;
+import com.nitya.assign.restassign.repository.UserRepository;
+
+@Service
+public class ReferralService {
+	
+	ReferralRepository referralRepo;
+	UserRepository userRepo;
+	BuyingDetailsRepository buyingDetailsRepo;
+	
+	public ReferralService(ReferralRepository referralRepo, UserRepository userRepo, BuyingDetailsRepository buyingDetailsRepo) {
+		this.referralRepo = referralRepo;
+		this.userRepo = userRepo;
+		this.buyingDetailsRepo = buyingDetailsRepo;
+	}
+
+	public void saveUser(User user) {
+		userRepo.save(user);
+	}
+
+	public List<User> getAllUser() {
+		return userRepo.findAll();
+	}
+	
+	public List<Referral> getUsersRefferedById(Integer id){
+		return userRepo.findById(id).get().getReferral();
+	}
+
+	public List<Referral> getAllReferrals() {
+		return referralRepo.findAll();
+	}
+	
+	public void saveBuyingDetails(BuyingDetails buyingDetails) {
+		buyingDetailsRepo.save(buyingDetails);
+	}
+	
+}

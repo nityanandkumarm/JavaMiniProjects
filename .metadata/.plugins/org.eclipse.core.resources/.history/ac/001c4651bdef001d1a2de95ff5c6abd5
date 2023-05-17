@@ -1,0 +1,11 @@
+package com.nitya.rest.users.service;
+
+import java.util.List;
+
+import com.nitya.rest.users.Entity.User;
+
+public class UsersServiceImpl implements UsersService {
+	public List<User> getAllUserDetails() {
+		return userRepo.findAll();
+	}
+}

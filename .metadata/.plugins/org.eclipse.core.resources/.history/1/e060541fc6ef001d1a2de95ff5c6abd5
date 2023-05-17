@@ -1,0 +1,7 @@
+package com.nitya.rest.wishlistservice.exception.service;
+
+import com.nitya.rest.wishlistservice.entity.Wishlist;
+
+public interface WishlistService {
+	public Wishlist getWishlistById(Integer id);
+}

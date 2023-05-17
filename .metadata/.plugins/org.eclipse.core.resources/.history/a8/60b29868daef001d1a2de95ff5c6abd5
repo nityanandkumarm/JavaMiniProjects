@@ -1,0 +1,5 @@
+package com.nitya.rest.users.proxy;
+
+public class WishlistServiceProxy {
+
+}

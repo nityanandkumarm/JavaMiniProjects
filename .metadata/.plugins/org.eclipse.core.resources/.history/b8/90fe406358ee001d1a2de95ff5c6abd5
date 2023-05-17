@@ -1,0 +1,64 @@
+package com.nitya.assign.restassign.entity;
+
+import org.springframework.data.annotation.Id;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.OneToMany;
+
+@Entity
+public class Referral {
+	
+	@Id
+	@GeneratedValue
+	private Integer id;
+	
+	@Column(nullable = false)
+	private String referredUserName;
+	
+	@Column(unique = true)
+	private Integer referredUserId;
+	
+	@OneToMany(mappedBy = "referral")
+	private User user;
+	
+	protected Referral(){}
+
+	public Referral(String referredUserName, Integer referredUserId) {
+		super();
+		this.referredUserName = referredUserName;
+		this.referredUserId = referredUserId;
+	}
+	public String getReferredUserName() {
+		return referredUserName;
+	}
+
+	public void setReferredUserName(String referredUserName) {
+		this.referredUserName = referredUserName;
+	}
+
+	public Integer getReferredUserId() {
+		return referredUserId;
+	}
+
+	public void setReferredUserId(Integer referredUserId) {
+		this.referredUserId = referredUserId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "Referral [id=" + id + ", referredUserName=" + referredUserName + ", referredUserId=" + referredUserId
+				+ ", user=" + user + "]";
+	}
+
+	
+}

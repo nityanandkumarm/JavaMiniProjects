@@ -1,0 +1,29 @@
+package com.nitya.rest.wishlistservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.nitya.rest.wishlistservice.entity.Wishlist;
+import com.nitya.rest.wishlistservice.exception.service.WishlistServiceImpl;
+
+@RestController
+public class WishlistController {
+
+	@Autowired
+	private WishlistServiceImpl wishlistServiceimpl;
+
+	@GetMapping(path = "/wishlist/{userId}")
+	public Wishlist getUserWishlist(@PathVariable Integer userId) {
+		return wishlistServiceimpl.getWishlistById(userId);
+	}
+
+	@PostMapping(path = "/wishlist/{userId}")
+	public ResponseEntity<Wishlist> addToWishlist(@PathVariable Integer userId, @RequestBody Integer propertyId) {
+		return wishlistServiceimpl.addItemToWishlist(userId, propertyId);
+	}
+}

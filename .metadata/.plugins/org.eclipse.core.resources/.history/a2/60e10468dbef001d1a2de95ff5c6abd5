@@ -1,0 +1,11 @@
+package com.nitya.rest.users.proxy;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(name = "wishlist-service", url = "localhost:8081")
+public interface WishlistServiceProxy {
+	@DeleteMapping(path = "/wishlist/{userId}")
+	public void deleteWishlist(@PathVariable Integer userId)
+}

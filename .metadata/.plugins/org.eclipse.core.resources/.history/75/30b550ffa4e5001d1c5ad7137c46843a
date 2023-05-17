@@ -1,0 +1,2 @@
+spring-applicaton.name=spring-cloud-config-server
+server.port=8888

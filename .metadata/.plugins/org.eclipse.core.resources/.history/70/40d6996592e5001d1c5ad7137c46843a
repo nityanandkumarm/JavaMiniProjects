@@ -1,0 +1,5 @@
+package com.nitya.microservices.limitsservice.configuration;
+
+public class Configuration {
+
+}

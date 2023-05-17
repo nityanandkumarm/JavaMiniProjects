@@ -1,0 +1,9 @@
+package com.nitya.rest.users.controller.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nitya.rest.users.Entity.User;
+
+public interface userRepo extends JpaRepository<User, Integer>{
+
+}

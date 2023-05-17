@@ -1,0 +1,5 @@
+package com.nitya.microservices.limitsservice.controller;
+
+public class LimitsController {
+
+}

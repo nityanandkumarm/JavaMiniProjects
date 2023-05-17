@@ -1,0 +1,8 @@
+package com.nitya.rest.users.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public interface usersService {
+
+}

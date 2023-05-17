@@ -1,0 +1,15 @@
+package com.nitya.rest.users.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.nitya.rest.users.Entity.User;
+
+@Service
+public interface UsersService {
+	public List<User> getAllUserDetails();
+	
+	public User getUserDetails(@PathVariable Integer id
+}
