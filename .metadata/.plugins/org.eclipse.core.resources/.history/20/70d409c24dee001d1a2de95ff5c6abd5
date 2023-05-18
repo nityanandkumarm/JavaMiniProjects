@@ -1,9 +1,0 @@
-package com.nitya.assign.restassign.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.nitya.assign.restassign.Entity.User;
-
-public interface UserRepository extends JpaRepository<User, Integer> {
-
-}
