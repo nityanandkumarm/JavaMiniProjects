@@ -1,9 +1,0 @@
-package com.nitya.rest.users.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.nitya.rest.users.Entity.Role;
-
-public interface RoleRepository extends JpaRepository<Role, Integer>{
-
-}

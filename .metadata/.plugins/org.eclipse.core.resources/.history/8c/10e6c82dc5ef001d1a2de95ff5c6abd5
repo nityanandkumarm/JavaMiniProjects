@@ -1,5 +1,0 @@
-package com.nitya.rest.wishlistservice.exception.service;
-
-public interface WishlistService {
-
-}
