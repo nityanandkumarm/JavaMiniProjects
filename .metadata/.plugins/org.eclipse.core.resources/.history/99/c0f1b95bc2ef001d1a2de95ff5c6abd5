@@ -1,9 +1,0 @@
-package com.nitya.rest.wishlistservice.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.nitya.rest.users.repository.Wishlist;
-
-public interface WishlistRepository extends JpaRepository<Wishlist, Integer>{
-
-}

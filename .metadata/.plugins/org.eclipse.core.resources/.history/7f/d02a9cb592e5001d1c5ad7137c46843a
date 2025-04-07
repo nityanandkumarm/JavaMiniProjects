@@ -1,6 +1,0 @@
-package com.nitya.microservices.limitsservice.configuration;
-
-public class Configuration {
-	private int minimum;
-	private int maximum;
-}
