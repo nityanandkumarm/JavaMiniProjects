@@ -24,4 +24,10 @@ public class TableCreateRequestDto {
     @Size(min = 1)
     @NotNull
     private List<@Valid ColumnDefinitionDto> columns;
+
+    private List<IndexDefinitionDto> indexes; // Add this field to support indexing
+
+    private boolean temporaryWriteTable;
+
+
 }
