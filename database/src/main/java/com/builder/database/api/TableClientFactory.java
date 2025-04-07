@@ -1,21 +1,19 @@
 package com.builder.database.api;
 
+import com.builder.database.api.config.TableClientConfig;
+import com.builder.database.api.impl.HttpTableClient;
+import com.builder.database.api.impl.LocalTableClient;
+import com.builder.database.service.TableService;
+
 public class TableClientFactory {
 
-    private static TableManager instance;
-
-    private TableClientFactory() {
+    private TableClientFactory(){
         throw new IllegalStateException("Utility class");
     }
-
-    public static TableManager get() {
-        if (instance == null) {
-            throw new IllegalStateException("No TableManager implementation registered.");
-        }
-        return instance;
-    }
-
-    public static void register(TableManager manager) {
-        instance = manager;
+    public static TableClient create(TableClientConfig config) {
+        return switch (config.getMode()) {
+            case HTTP -> new HttpTableClient(config);
+            case LOCAL -> new LocalTableClient(config.getTableService());
+        };
     }
 }
