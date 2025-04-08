@@ -64,7 +64,7 @@ public class TableServiceImpl implements TableService {
         List<Map<String, Object>> rows = jdbcTemplate.query(sql, new ColumnMapRowMapper());
 
         return rows.stream()
-                .map(GenericResultRowDto::fromMap)
+                .map(tableMapper::fromMap)
                 .collect(Collectors.toList());
     }
 

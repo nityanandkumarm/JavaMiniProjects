@@ -3,22 +3,22 @@ package com.builder.database.api;
 import com.builder.database.api.impl.HttpTableClient;
 import com.builder.database.api.impl.LocalTableClient;
 import com.builder.database.service.TableService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class TableClientFactory {
 
     private final TableService tableService;
+
+    @Autowired
+    public TableClientFactory(final TableService tableService){
+        this.tableService = tableService;
+    }
 
     public TableClient createLocalClient() {
         return new LocalTableClient(tableService);
