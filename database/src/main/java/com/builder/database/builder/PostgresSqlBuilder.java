@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 public class PostgresSqlBuilder implements SqlBuilder {
 
+    static final String LAST_UPDATE_DATE = "lastUpdateDate";
+    static final String IS_DELETED = "isDeleted";
+
     @Override
     public String buildCreateTableSql(TableDefinitionRequest request) {
         String fullTableName = quote(request.getSchemaName()) + "." + quote(request.getTableName());
@@ -18,8 +21,8 @@ public class PostgresSqlBuilder implements SqlBuilder {
                 .map(this::buildActualColumnDefinition)
                 .collect(Collectors.toList());
 
-        columnDefs.add(quote("lastUpdateDate") + " TIMESTAMP NOT NULL");
-        columnDefs.add(quote("isDeleted") + " BOOLEAN NOT NULL DEFAULT FALSE");
+        columnDefs.add(quote(LAST_UPDATE_DATE) + " TIMESTAMP NOT NULL");
+        columnDefs.add(quote(IS_DELETED) + " BOOLEAN NOT NULL DEFAULT FALSE");
 
         return "CREATE TABLE IF NOT EXISTS " + fullTableName + " (\n" +
                 String.join(",\n", columnDefs) + "\n" +
@@ -36,8 +39,8 @@ public class PostgresSqlBuilder implements SqlBuilder {
                 .map(col -> quote(col.getName()) + " " + COLUMN_DATA_TYPE)
                 .collect(Collectors.toList());
 
-        columnDefs.add(quote("lastUpdateDate") + " " + COLUMN_DATA_TYPE);
-        columnDefs.add(quote("isDeleted") + " " + COLUMN_DATA_TYPE);
+        columnDefs.add(quote(LAST_UPDATE_DATE) + " " + COLUMN_DATA_TYPE);
+        columnDefs.add(quote(IS_DELETED) + " " + COLUMN_DATA_TYPE);
 
         return "CREATE TABLE IF NOT EXISTS " + tempTableName + " (\n" +
                 String.join(",\n", columnDefs) + "\n" +
@@ -71,7 +74,7 @@ public class PostgresSqlBuilder implements SqlBuilder {
         if (indexes == null) return List.of();
         return indexes.stream()
                 .map(index -> buildCreateIndexSql(schemaName, tableName, index))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -143,4 +146,41 @@ public class PostgresSqlBuilder implements SqlBuilder {
     private String quote(String name) {
         return "\"" + name.replace("\"", "\"\"") + "\"";
     }
+
+    @Override
+    public String buildFlushFromTempToActualSql(TableDefinitionRequest def, int batchSize) {
+        String actualTable = quote(def.getSchemaName()) + "." + quote(def.getTableName());
+        String tempTable = quote(def.getSchemaName()) + "." + quote("__tmp_write_" + def.getTableName());
+
+        List<String> columnNames = def.getColumns().stream().map(ColumnDefinition::getName).toList();
+        columnNames = new ArrayList<>(columnNames);
+        columnNames.add(LAST_UPDATE_DATE);
+        columnNames.add(IS_DELETED);
+
+        String insertColumns = columnNames.stream().map(this::quote).collect(Collectors.joining(", "));
+
+        String selectColumns = columnNames.stream()
+                .map(col -> "CAST(" + quote(col) + " AS " + resolveColumnType(col, def) + ")")
+                .collect(Collectors.joining(", "));
+
+        return """
+        INSERT INTO %s (%s)
+        SELECT %s FROM %s
+        WHERE isDeleted = 'false'
+        LIMIT %d;
+        """.formatted(actualTable, insertColumns, selectColumns, tempTable, batchSize);
+    }
+
+
+    private String resolveColumnType(String columnName, TableDefinitionRequest def) {
+        if (LAST_UPDATE_DATE.equals(columnName)) return "TIMESTAMP";
+        if (IS_DELETED.equals(columnName)) return "BOOLEAN";
+
+        return def.getColumns().stream()
+                .filter(col -> col.getName().equals(columnName))
+                .map(ColumnDefinition::getType)
+                .findFirst()
+                .orElse("TEXT");
+    }
+
 }

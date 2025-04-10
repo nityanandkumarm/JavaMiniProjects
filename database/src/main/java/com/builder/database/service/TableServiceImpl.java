@@ -2,6 +2,7 @@ package com.builder.database.service;
 
 import com.builder.database.builder.SqlBuilder;
 import com.builder.database.builder.SqlBuilderFactory;
+import com.builder.database.config.FlushProperties;
 import com.builder.database.dto.GenericResultRowDto;
 import com.builder.database.dto.IndexDefinitionDto;
 import com.builder.database.dto.SelectQueryRequestDto;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -27,6 +27,8 @@ public class TableServiceImpl implements TableService {
     private final JdbcTemplate jdbcTemplate;
     private final SqlBuilderFactory sqlBuilderFactory;
     private final TableMapper tableMapper;
+    private final FlushProperties flushProperties;
+    private final TableMetadataService tableMetadataService;
 
     @Override
     public void createTable(TableCreateRequestDto requestDto) {
@@ -37,6 +39,12 @@ public class TableServiceImpl implements TableService {
         if (request.isTemporaryWriteTable()) {
             String createTempTableSql = sqlBuilder.buildCreateTempWriteTableSql(request);
             jdbcTemplate.execute(createTempTableSql);
+            String createTableSql = sqlBuilder.buildCreateTableSql(request);
+            jdbcTemplate.execute(createTableSql);
+
+            sqlBuilder.buildAllCreateIndexSql(
+                    request.getSchemaName(), request.getTableName(), request.getIndexes()
+            ).forEach(jdbcTemplate::execute);
         } else {
             String createTableSql = sqlBuilder.buildCreateTableSql(request);
             jdbcTemplate.execute(createTableSql);
@@ -65,7 +73,7 @@ public class TableServiceImpl implements TableService {
 
         return rows.stream()
                 .map(tableMapper::fromMap)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -75,4 +83,18 @@ public class TableServiceImpl implements TableService {
         String sql = sqlBuilder.buildCreateIndexSql(schemaName, tableName, indexModel);
         jdbcTemplate.execute(sql);
     }
+
+    @Override
+    public void flushTempToActual(String schema, String table) {
+        SqlBuilder sqlBuilder = sqlBuilderFactory.getBuilder();
+
+        TableDefinitionRequest def = tableMetadataService.getTableDefinition(schema, table, false);
+        int batchSize = flushProperties.getBatchSize();
+
+        String sql = sqlBuilder.buildFlushFromTempToActualSql(def, batchSize);
+
+        log.info("Flushing {} rows from {}.{} to actual table.", batchSize, schema, table);
+        jdbcTemplate.execute(sql);
+    }
+
 }

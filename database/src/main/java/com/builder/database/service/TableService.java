@@ -11,4 +11,5 @@ public interface TableService {
     void createTable(TableCreateRequestDto request);
     List<GenericResultRowDto> executeSelectQuery(SelectQueryRequestDto request);
     void createIndex(String schemaName, String tableName, IndexDefinitionDto index);
+    void flushTempToActual(String schemaName, String tableName);
 }

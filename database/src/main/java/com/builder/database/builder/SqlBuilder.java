@@ -24,4 +24,5 @@ public interface SqlBuilder {
             Map<String, Object> filters,
             List<AggregationRequest> aggregations
     );
+    String buildFlushFromTempToActualSql(TableDefinitionRequest definition, int batchSize);
 }
