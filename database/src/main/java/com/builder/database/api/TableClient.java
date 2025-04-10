@@ -1,9 +1,14 @@
 package com.builder.database.api;
 
-import com.builder.database.dto.TableCreateRequestDto;
+import com.builder.database.dto.*;
+
+import java.util.List;
 
 public interface TableClient {
-    void createTable(TableCreateRequestDto request);
-    // Future: void insertData(...);
-    // Future: void flushTable(...);
+
+    void createTable(TableCreateRequestDto requestDto);
+
+    void createIndex(String schemaName, String tableName, IndexDefinitionDto indexDto);
+
+    List<GenericResultRowDto> selectQuery(SelectQueryRequestDto requestDto);
 }

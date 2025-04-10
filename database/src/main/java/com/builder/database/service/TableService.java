@@ -1,26 +1,15 @@
 package com.builder.database.service;
 
-import com.builder.database.builder.SqlBuilder;
-import com.builder.database.builder.SqlBuilderFactory;
-import com.builder.database.model.TableDefinitionRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
+import com.builder.database.dto.GenericResultRowDto;
+import com.builder.database.dto.IndexDefinitionDto;
+import com.builder.database.dto.SelectQueryRequestDto;
+import com.builder.database.dto.TableCreateRequestDto;
 
-@Service
-@RequiredArgsConstructor
-public class TableService {
+import java.util.List;
 
-    private final JdbcTemplate jdbcTemplate;
-    private final SqlBuilderFactory sqlBuilderFactory;
-
-    public void createTable(TableDefinitionRequest request) {
-        SqlBuilder sqlBuilder = sqlBuilderFactory.getBuilder();
-
-        String createTableSql = sqlBuilder.buildCreateTableSql(request);
-        jdbcTemplate.execute(createTableSql);
-
-        String createTempTableSql = sqlBuilder.buildCreateTempWriteTableSql(request);
-        jdbcTemplate.execute(createTempTableSql);
-    }
+public interface TableService {
+    void createTable(TableCreateRequestDto request);
+    List<GenericResultRowDto> executeSelectQuery(SelectQueryRequestDto request);
+    void createIndex(String schemaName, String tableName, IndexDefinitionDto index);
+    void flushTempToActual(String schemaName, String tableName);
 }

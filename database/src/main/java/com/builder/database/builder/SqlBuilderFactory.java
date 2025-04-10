@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SqlBuilderFactory {
 
-    // In future, can be loaded from application.properties or env
+    // In future, can be loaded from application.yml or env
     private static final String DEFAULT_DB = "postgres";
 
     public SqlBuilder getBuilder() {
